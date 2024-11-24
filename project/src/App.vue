@@ -1,31 +1,32 @@
 <template>
-  <div>
-    <h1>Prochaines sorties de films</h1>
-    <MovieList />
+  <div id="app">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import MovieList from './components/MovieList.vue';
-
 export default {
-  components: { MovieList },
-};
+  name: 'App'
+}
 </script>
 
 <style>
-body{
-  text-align: center;
-  background-color: #121212;
-  color: #e0e0e0;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-h1 {
-  font-family: "Lacquer", system-ui;
-  font-weight: 400;
-  font-style: normal;
-  color: #0C63CC;
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #1e1e1e;
+}
+
+#app {
+  min-height: 100vh;
+  background-color: #1e1e1e;
+  color: white;
 }
 </style>

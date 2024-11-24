@@ -9,7 +9,7 @@ export const getUpcomingMovies = async () => {
     let movies = [];
     let currentPage = 1;
     let totalPages = 1;
-
+    
     do {
       const response = await axios.get(`${BASE_URL}/movie/upcoming`, {
         params: {
@@ -18,24 +18,37 @@ export const getUpcomingMovies = async () => {
           page: currentPage,
         },
       });
-
+      
       if (response.data.results) {
         const filteredMovies = response.data.results.filter(
           (movie) => new Date(movie.release_date) >= new Date(today)
         );
-
         movies = [...movies, ...filteredMovies];
       }
-
+      
       totalPages = response.data.total_pages;
       currentPage++;
-    } while (currentPage <= totalPages && movies.length < 12); 
-
+    } while (currentPage <= totalPages && movies.length < 12);
+    
     return movies.slice(0, 12);
   } catch (error) {
     console.error('Erreur lors de la récupération des films :', error);
-    return [];
+    throw error;
   }
 };
 
-getUpcomingMovies();
+export const getMovieDetails = async (movieId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/movie/${movieId}`, {
+      params: {
+        api_key: API_KEY,
+        language: 'fr-FR',
+        append_to_response: 'credits,videos'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du film :', error);
+    throw error;
+  }
+};
