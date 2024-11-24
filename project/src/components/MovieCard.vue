@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     formattedReleaseDate() {
-      if (!this.movie.release_date) return 'Date inconnue'; // Cas où la date est manquante
+      if (!this.movie.release_date) return 'Date inconnue'; 
       const date = new Date(this.movie.release_date);
       return new Intl.DateTimeFormat('fr-FR', {
         day: '2-digit',
@@ -34,6 +34,7 @@ export default {
   padding: 10px;
   text-align: center;
   box-shadow: 4px 4px 2px 1px #d7d7d7;
+  background-color: #4e4e4e;
 }
 img {
   width: 100%;
