@@ -39,6 +39,20 @@
           </span>
         </div>
 
+
+        <div v-if="trailerKey" class="trailer-section">
+          <h2>Bande-annonce</h2>
+          <div class="video-container">
+            <iframe 
+              :src="`https://www.youtube.com/embed/${trailerKey}`" 
+              title="Bande-annonce"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+
         <div v-if="movie.overview" class="overview">
           <h2>Synopsis</h2>
           <p>{{ movie.overview }}</p>
@@ -106,6 +120,14 @@ export default {
       return movie.value?.credits?.cast?.slice(0, 5) || [];
     });
 
+    const trailerKey = computed(() => {
+      const videos = movie.value?.videos?.results || [];
+      const trailerFr = videos.find(v => v.type === 'Trailer' && v.official && v.site === 'YouTube' && v.iso_639_1 === 'fr');
+      const trailerEn = videos.find(v => v.type === 'Trailer' && v.official && v.site === 'YouTube' && v.iso_639_1 === 'en');
+      
+      return trailerFr?.key || trailerEn?.key;
+    });
+
     const fetchMovieDetails = async () => {
       try {
         loading.value = true;
@@ -133,6 +155,7 @@ export default {
       backdropStyle,
       formattedReleaseDate,
       mainCast,
+      trailerKey,
       fetchMovieDetails,
       goBack
     };
@@ -141,6 +164,33 @@ export default {
 </script>
 
 <style scoped>
+.trailer-section {
+  margin-bottom: 30px;
+}
+
+.trailer-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-family: "Quicksand", serif;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .movie-details {
   position: relative;
   min-height: 100vh;
